@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import "./App.css";
 import "./index.css";
 
 
 function App() {
     const [newTodo, setNewTodo] = useState("");
-    const [todos, setTodos] = useState([]);
+    const [todos, setTodos] = useState(() =>{
+        const saved = localStorage.getItem("todosHistory");
+        return saved ? JSON.parse(saved) : [];
+    });
     const [editIndex, setEditIndex] = useState(null);
     const [editText, setEditText] = useState("");
+
+
+    // Save todos to LocalStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem('todosHistory', JSON.stringify(todos));
+    }, [todos]);
 
     function handleAddTodo() {
         {/* [...todos, newTodo] here 
